@@ -1,34 +1,88 @@
+using MiApiMinimal.Data;
+using MiApiMinimal.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios al contenedor.
-builder.Services.AddEndpointsApiExplorer();  // Para la exploración de la API (Swagger)
-builder.Services.AddSwaggerGen();  // Para generar la documentación de Swagger
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Artículos", Version = "v1" });
+});
+
+
 
 var app = builder.Build();
 
-// Crear algunos artículos en memoria
-var articles = new List<string>
-{
-    "Artículo 1: Introducción a Minimal APIs",
-    "Artículo 2: ¿Qué es .NET 9?",
-    "Artículo 3: Creando una API RESTful"
-};
 
-// Endpoint GET para obtener todos los artículos
-app.MapGet("/api/articles", () => Results.Ok(articles));
-
-// Endpoint POST para agregar un artículo
-app.MapPost("/api/articles", (string article) =>
-{
-    articles.Add(article);
-    return Results.Created($"/api/articles/{articles.Count - 1}", article);
-});
-
-// Configurar Swagger en el entorno de desarrollo
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Artículos V1");
+    });
 }
 
+
+ConfigureApiEndpoints(app);
+
+
 app.Run();
+
+void ConfigureApiEndpoints(WebApplication app)
+{
+   
+    app.MapGet("/api/articles", async (ApplicationDbContext db) =>
+    {
+        var articles = await db.Articles.ToListAsync();
+        return Results.Ok(articles);
+    });
+
+   
+    app.MapGet("/api/articles/{id}", async (int id, ApplicationDbContext db) =>
+    {
+        var article = await db.Articles.FindAsync(id);
+        return article is not null ? Results.Ok(article) : Results.NotFound();
+    });
+
+ 
+    app.MapPost("/api/articles", async (Article article, ApplicationDbContext db) =>
+    {
+        db.Articles.Add(article);
+        await db.SaveChangesAsync();
+        return Results.Created($"/api/articles/{article.Id}", article);
+    });
+
+
+    app.MapPut("/api/articles/{id}", async (int id, Article updatedArticle, ApplicationDbContext db) =>
+    {
+        var article = await db.Articles.FindAsync(id);
+        if (article is null) return Results.NotFound();
+
+        article.Title = updatedArticle.Title;
+        article.Content = updatedArticle.Content;
+        await db.SaveChangesAsync();
+
+        return Results.Ok(article);
+    });
+
+
+    app.MapDelete("/api/articles/{id}", async (int id, ApplicationDbContext db) =>
+    {
+        var article = await db.Articles.FindAsync(id);
+        if (article is null) return Results.NotFound();
+
+        db.Articles.Remove(article);
+        await db.SaveChangesAsync();
+        return Results.Ok();
+    });
+}
+

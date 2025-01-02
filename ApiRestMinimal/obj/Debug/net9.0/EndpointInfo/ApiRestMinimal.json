@@ -1,0 +1,42 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ApiRestMinimal",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/articles": {
+      "get": {
+        "tags": [
+          "ApiRestMinimal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ApiRestMinimal"
+        ],
+        "parameters": [
+          {
+            "name": "article",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}

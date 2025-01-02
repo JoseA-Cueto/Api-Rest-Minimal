@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiRestMinimal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a461c4183431d46a234e5e9205035318c0c560a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiRestMinimal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiRestMinimal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

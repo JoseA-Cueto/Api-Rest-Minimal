@@ -1,1 +1,27 @@
 .vs/
+# Archivos de configuración de Visual Studio
+.vs/
+.vscode/
+.idea/
+
+# Archivos binarios
+bin/
+obj/
+
+# Archivos de configuración de usuario
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos generados por NuGet
+packages/
+
+# Archivos generados por el compilador
+*.dll
+*.exe
+*.pdb
+*.dbmdl
+# Ignorar AssemblyInfo.cs
+**/Properties/AssemblyInfo.cs
+

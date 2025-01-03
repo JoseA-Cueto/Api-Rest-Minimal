@@ -1,10 +1,13 @@
-﻿namespace MiApiMinimal.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MiApiMinimal.Models
 {
     public class Category
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public List<Article> Articles { get; set; } = new();
+        public virtual ICollection<Article> Articles { get; set; }
     }
 }
 

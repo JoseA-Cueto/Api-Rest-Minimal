@@ -17,4 +17,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="obj\Debug\net9.0\ApiRestMinimal.csproj.AssemblyReference.cache" />
+  </ItemGroup>
+
 </Project>

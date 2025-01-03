@@ -1,32 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jose\\source\\repos\\ApiRestMinimal\\ApiRestMinimal\\ApiRestMinimal.csproj": {}
+    "D:\\DataBank\\2025 Programacion\\Colaborativos\\Jose-Api\\Api-Rest-Minimal\\ApiRestMinimal\\ApiRestMinimal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jose\\source\\repos\\ApiRestMinimal\\ApiRestMinimal\\ApiRestMinimal.csproj": {
+    "D:\\DataBank\\2025 Programacion\\Colaborativos\\Jose-Api\\Api-Rest-Minimal\\ApiRestMinimal\\ApiRestMinimal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jose\\source\\repos\\ApiRestMinimal\\ApiRestMinimal\\ApiRestMinimal.csproj",
+        "projectUniqueName": "D:\\DataBank\\2025 Programacion\\Colaborativos\\Jose-Api\\Api-Rest-Minimal\\ApiRestMinimal\\ApiRestMinimal.csproj",
         "projectName": "ApiRestMinimal",
-        "projectPath": "C:\\Users\\Jose\\source\\repos\\ApiRestMinimal\\ApiRestMinimal\\ApiRestMinimal.csproj",
-        "packagesPath": "C:\\Users\\Jose\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jose\\source\\repos\\ApiRestMinimal\\ApiRestMinimal\\obj\\",
+        "projectPath": "D:\\DataBank\\2025 Programacion\\Colaborativos\\Jose-Api\\Api-Rest-Minimal\\ApiRestMinimal\\ApiRestMinimal.csproj",
+        "packagesPath": "C:\\Users\\Miguel David\\.nuget\\packages\\",
+        "outputPath": "D:\\DataBank\\2025 Programacion\\Colaborativos\\Jose-Api\\Api-Rest-Minimal\\ApiRestMinimal\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
+        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
-          "C:\\Users\\Jose\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Miguel David\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,8 +38,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net9.0": {

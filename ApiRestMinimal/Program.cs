@@ -2,40 +2,52 @@ using MiApiMinimal.Data;
 using MiApiMinimal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
+
+// Logger configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+Log.Information("starting server");
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Artículos", Version = "v1" });
-});
-
-
-
-var app = builder.Build();
-
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    // Logger connection
+    builder.Host.UseSerilog((context, loggerConfiguration) =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Artículos V1");
+        loggerConfiguration.WriteTo.Console();
+        loggerConfiguration.ReadFrom.Configuration(context.Configuration);
     });
+    
+    // Database connection
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
+    // Other services
+    builder.Services
+        .AddEndpointsApiExplorer()
+        .AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Artï¿½culos", Version = "v1" });
+        });
 }
 
+var app = builder.Build();
+{
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Artï¿½culos V1");
+        });
+    }
+    app.UseSerilogRequestLogging();
+    ConfigureApiEndpoints(app);
+    app.Run();
+}
 
-ConfigureApiEndpoints(app);
-
-
-app.Run();
+// TODO: modificar la estructura de los minimal endpoints
 
 void ConfigureApiEndpoints(WebApplication app)
 {

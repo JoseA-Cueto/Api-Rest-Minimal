@@ -2,12 +2,27 @@ using MiApiMinimal.Data;
 using MiApiMinimal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
+
+// Logger configuration
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+Log.Information("starting server");
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    // Logger connection
+    builder.Host.UseSerilog((context, loggerConfiguration) =>
+    {
+        loggerConfiguration.WriteTo.Console();
+        loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+    });
+    
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
     // Other services
     builder.Services
         .AddEndpointsApiExplorer()
@@ -27,6 +42,7 @@ var app = builder.Build();
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1");
         });
     }
+    app.UseSerilogRequestLogging();
     ConfigureApiEndpoints(app);
     app.Run();
 }

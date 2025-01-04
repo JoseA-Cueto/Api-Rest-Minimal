@@ -1,5 +1,6 @@
 using MiApiMinimal.Data;
 using MiApiMinimal.Models;
+using MiAplicacion.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -33,6 +34,7 @@ var builder = WebApplication.CreateBuilder(args);
 }
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 {
     if (app.Environment.IsDevelopment())
     {

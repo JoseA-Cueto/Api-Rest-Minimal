@@ -1,5 +1,6 @@
 using MiApiMinimal.Data;
 using MiApiMinimal.Models;
+using MiAplicacion.Exceptions;
 using MiAplicacion.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -53,23 +54,31 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 void ConfigureApiEndpoints(WebApplication app)
 {
-   
+    
     app.MapGet("/api/articles", async (ApplicationDbContext db) =>
     {
         var articles = await db.Articles.ToListAsync();
         return Results.Ok(articles);
     });
 
-   
+
     app.MapGet("/api/articles/{id}", async (int id, ApplicationDbContext db) =>
     {
         var article = await db.Articles.FindAsync(id);
-        return article is not null ? Results.Ok(article) : Results.NotFound();
+        if (article is null)
+            throw new NotFoundException("Article not found");
+
+        return Results.Ok(article);
     });
 
- 
     app.MapPost("/api/articles", async (Article article, ApplicationDbContext db) =>
     {
+       
+        if (string.IsNullOrWhiteSpace(article.Title) || string.IsNullOrWhiteSpace(article.Content))
+        {
+            throw new ValidationException("Title and Content", "Cannot be empty.");
+        }
+
         db.Articles.Add(article);
         await db.SaveChangesAsync();
         return Results.Created($"/api/articles/{article.Id}", article);
@@ -78,8 +87,15 @@ void ConfigureApiEndpoints(WebApplication app)
 
     app.MapPut("/api/articles/{id}", async (int id, Article updatedArticle, ApplicationDbContext db) =>
     {
+        
+        if (string.IsNullOrWhiteSpace(updatedArticle.Title) || string.IsNullOrWhiteSpace(updatedArticle.Content))
+        {
+            throw new ValidationException("Title and Content", "Cannot be empty.");
+        }
+
         var article = await db.Articles.FindAsync(id);
-        if (article is null) return Results.NotFound();
+        if (article is null)
+            throw new NotFoundException("Article not found");
 
         article.Title = updatedArticle.Title;
         article.Content = updatedArticle.Content;
@@ -88,11 +104,12 @@ void ConfigureApiEndpoints(WebApplication app)
         return Results.Ok(article);
     });
 
-
+   
     app.MapDelete("/api/articles/{id}", async (int id, ApplicationDbContext db) =>
     {
         var article = await db.Articles.FindAsync(id);
-        if (article is null) return Results.NotFound();
+        if (article is null)
+            throw new NotFoundException("Article not found");
 
         db.Articles.Remove(article);
         await db.SaveChangesAsync();

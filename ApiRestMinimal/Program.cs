@@ -33,8 +33,17 @@ var builder = WebApplication.CreateBuilder(args);
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
         });
 }
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()  
+              .AllowAnyHeader()  
+              .AllowAnyMethod(); 
+    });
+});
 var app = builder.Build();
+app.UseCors("AllowAll");
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 {
     if (app.Environment.IsDevelopment())

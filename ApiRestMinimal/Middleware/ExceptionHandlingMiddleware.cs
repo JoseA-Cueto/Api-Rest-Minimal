@@ -26,18 +26,19 @@ namespace MiAplicacion.Middleware
             }
             catch (NotFoundException ex)
             {
-                _logger.LogError(ex, "Not Found Exception");
+                _logger.LogError(ex, "Resource not found");
                 await HandleExceptionAsync(httpContext, ex.StatusCode, ex.Message);
             }
             catch (ValidationException ex)
             {
-                _logger.LogError(ex, "Validation Exception");
+                _logger.LogError(ex, "Validation error");
                 await HandleExceptionAsync(httpContext, ex.StatusCode, ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Internal Server Error");
-                await HandleExceptionAsync(httpContext, (int)HttpStatusCode.InternalServerError, "Error interno del servidor");
+                _logger.LogError(ex, "Internal server error");
+                await HandleExceptionAsync(httpContext, (int)HttpStatusCode.InternalServerError,
+                    "An unexpected error occurred. Please try again later.");
             }
         }
 
@@ -46,7 +47,7 @@ namespace MiAplicacion.Middleware
             var errorResponse = new
             {
                 StatusCode = statusCode,
-                Message = message,
+                Message = message,  
                 TraceId = context.TraceIdentifier 
             };
 
@@ -56,3 +57,4 @@ namespace MiAplicacion.Middleware
         }
     }
 }
+

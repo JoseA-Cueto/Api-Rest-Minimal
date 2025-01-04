@@ -19,6 +19,8 @@
 
 # Mono auto generated files
 mono_crash.*
+# Ignorar la carpeta de user-secrets
+.microsoft/usersecrets/
 
 # Build results
 [Dd]ebug/

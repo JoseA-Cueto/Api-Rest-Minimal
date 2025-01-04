@@ -362,6 +362,74 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+# Ignore build output directories
+bin/
+obj/
+debug/
+Debug/
+release/
+Release/
+
+# Ignore package directories
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore user-specific files
+*.user
+*.userosscache
+*.suo
+*.swp
+*.log
+
+# Ignore IDE and editor-related files
+.vscode/
+*.code-workspace
+.idea/
+*.vs/
+.vs/
+*.vscode/
+
+# Ignore temporary files
+*.tmp
+*.cache
+*.pdb
+*.pidb
+
+# Ignore AssemblyInfo and generated files
+**/ApiRestMinimal.AssemblyInfo.cs
+
+# Ignore dependency files
+project.lock.json
+project.fragment.lock.json
+*.lock.json
+
+# Ignore build-related files
+*.build.cs
+*.build.json
+*.build.props
+*.build.targets
+
+# Ignore Visual Studio Code build logs
+.vscode-test/
+.vscode-test-explorer/
+.vscode-test-workspace/
+
+# Ignore Secrets and Configurations
+secrets.json
+appsettings.Development.json
+.env
+
+# Ignore by default folders related to .NET development
+*.dll
+*.exe
+*.app
+*.appx
+*.msi
+*.zip
+*.tar
+*.gz
+
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd

@@ -1,7 +1,7 @@
 ﻿using MiApiMinimal.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MiApiMinimal.Data;
+namespace ApiRestMinimal.Data;
 
 public class ApplicationDbContext : DbContext
 {

@@ -1,7 +1,7 @@
-﻿using ApiRestMinimal.DTOs;
-using ApiRestMinimal.Services.Interfaces;
+using ApiRestMinimal.Common.Interfaces.Articles;
+using ApiRestMinimal.Contracts.Requests;
 
-namespace ApiRestMinimal.Endpoints;
+namespace ApiRestMinimal.Endpoints.Articles;
 
 public static class ArticleEndpoints
 {
@@ -25,7 +25,7 @@ public static class ArticleEndpoints
         });
 
         // POST a new article
-        app.MapPost("/api/articles", async (ArticleDTOs articleDto, IArticleService articleService) =>
+        app.MapPost("/api/articles", async (CreateArticleRequest articleDto, IArticleService articleService) =>
         {
             if (string.IsNullOrWhiteSpace(articleDto.Title) || string.IsNullOrWhiteSpace(articleDto.Content))
                 return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
@@ -36,18 +36,13 @@ public static class ArticleEndpoints
 
         // PUT (update) an article
         app.MapPut("/api/articles/{id:guid}",
-            async (Guid id, ArticleDTOs updatedArticleDto, IArticleService articleService) =>
+            async (Guid id, UpdateArticleRequest updatedArticleDto, IArticleService articleService) =>
             {
                 if (string.IsNullOrWhiteSpace(updatedArticleDto.Title) ||
                     string.IsNullOrWhiteSpace(updatedArticleDto.Content))
                     return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
 
-                var existingArticle = await articleService.GetArticleByIdAsync(id);
-                if (existingArticle is null)
-                    return Results.NotFound(new { Message = "Article not found" });
-
-                updatedArticleDto.Id = id; // Ensure the ID matches the updated entity
-                await articleService.UpdateArticleAsync(updatedArticleDto);
+                await articleService.UpdateArticleAsync(id, updatedArticleDto);
 
                 return Results.Ok(updatedArticleDto);
             });

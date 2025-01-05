@@ -1,15 +1,11 @@
+using ApiRestMinimal.Endpoints;
+using ApiRestMinimal.Extensions;
 using MiApiMinimal.Data;
-using MiApiMinimal.Models;
-using MiAplicacion.Exceptions;
+using MiApiMinimal.Mappings;
 using MiAplicacion.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using MiApiMinimal.Mappings;
-using ApiRestMinimal.DTOs;
-using AutoMapper;
-using ApiRestMinimal.Extensions;
-using ApiRestMinimal.Endpoints;
 
 // Logger configuration
 Log.Logger = new LoggerConfiguration()
@@ -21,21 +17,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Registrar dependencias usando el contenedor
 builder.Services.AddApplicationServices();
-
-// Agregar AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile));
 {
+    // Agregar AutoMapper
+    builder.Services.AddAutoMapper(typeof(MappingProfile));
     // Logger connection
     builder.Host.UseSerilog((context, loggerConfiguration) =>
     {
         loggerConfiguration.WriteTo.Console();
         loggerConfiguration.ReadFrom.Configuration(context.Configuration);
     });
-    
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    
     // Other services
     builder.Services
         .AddEndpointsApiExplorer()
@@ -43,31 +36,30 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
         {
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
         });
-}
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
+    // Cors
+    builder.Services.AddCors(options =>
     {
-        policy.AllowAnyOrigin()  
-              .AllowAnyHeader()  
-              .AllowAnyMethod(); 
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
     });
-});
+}
+
 var app = builder.Build();
-app.UseCors("AllowAll");
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 {
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1");
-        });
+        app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1"); });
     }
+
+    app.UseCors("AllowAll");
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseSerilogRequestLogging();
     app.MapArticleEndpoints();
+
     app.Run();
 }
-
-

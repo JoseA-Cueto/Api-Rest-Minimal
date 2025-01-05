@@ -1,5 +1,4 @@
-﻿
-public interface IRepositoryBase<T> where T : class
+﻿public interface IRepositoryBase<T> where T : class
 {
     Task<List<T>> GetAllAsync();
     Task<T?> GetByIdAsync(Guid id);

@@ -1,9 +1,10 @@
 ﻿using ApiRestMinimal.Exceptions.Base;
 
-namespace MiAplicacion.Exceptions
+namespace MiAplicacion.Exceptions;
+
+public class NotFoundException : ExceptionBase
 {
-    public class NotFoundException : ExceptionBase
+    public NotFoundException(string message) : base(message, 404)
     {
-        public NotFoundException(string message) : base(message, 404) { }
     }
 }

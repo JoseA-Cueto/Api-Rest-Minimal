@@ -1,14 +1,11 @@
-﻿using System;
+﻿namespace ApiRestMinimal.Exceptions.Base;
 
-namespace ApiRestMinimal.Exceptions.Base
+public abstract class ExceptionBase : Exception
 {
-    public abstract class ExceptionBase : Exception
+    protected ExceptionBase(string message, int statusCode) : base(message)
     {
-        public int StatusCode { get; }
-
-        protected ExceptionBase(string message, int statusCode) : base(message)
-        {
-            StatusCode = statusCode;
-        }
+        StatusCode = statusCode;
     }
+
+    public int StatusCode { get; }
 }

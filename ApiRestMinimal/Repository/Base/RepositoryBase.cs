@@ -1,5 +1,4 @@
-﻿
-using MiApiMinimal.Data;
+﻿using MiApiMinimal.Data;
 using Microsoft.EntityFrameworkCore;
 
 public class RepositoryBase<T> : IRepositoryBase<T> where T : class

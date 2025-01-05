@@ -2,15 +2,13 @@
 using AutoMapper;
 using MiApiMinimal.Models;
 
-namespace MiApiMinimal.Mappings
+namespace MiApiMinimal.Mappings;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-          
-            CreateMap<Article, ArticleDTOs>().ReverseMap();            
-            CreateMap<Category, CategoryDTOs>().ReverseMap();
-        }
+        CreateMap<Article, ArticleDTOs>().ReverseMap();
+        CreateMap<Category, CategoryDTOs>().ReverseMap();
     }
 }

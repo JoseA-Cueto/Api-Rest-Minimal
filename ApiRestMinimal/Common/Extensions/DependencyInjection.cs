@@ -1,8 +1,9 @@
-﻿using ApiRestMinimal.Repository.Interfaces;
+﻿using ApiRestMinimal.Common.Interfaces.Articles;
+using ApiRestMinimal.Persistence.Articles;
+using ApiRestMinimal.Services.Articles;
 using ApiRestMinimal.Services.Interfaces;
-using ApiRestMinimal.Services.Serv;
 
-namespace ApiRestMinimal.Extensions;
+namespace ApiRestMinimal.Common.Extensions;
 
 public static class DependencyInjection
 {

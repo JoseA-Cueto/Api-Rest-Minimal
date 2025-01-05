@@ -1,5 +1,8 @@
-﻿using MiApiMinimal.Data;
+﻿using ApiRestMinimal.Common.Interfaces.BaseRepo;
+using MiApiMinimal.Data;
 using Microsoft.EntityFrameworkCore;
+
+namespace ApiRestMinimal.Persistence.Base;
 
 public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {

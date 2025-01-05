@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using MiAplicacion.Exceptions;
+using ApiRestMinimal.Common.Exceptions;
 
-namespace MiAplicacion.Middleware;
+namespace ApiRestMinimal.Common.Middleware;
 
 public class ExceptionHandlingMiddleware
 {

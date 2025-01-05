@@ -1,10 +1,10 @@
-﻿using ApiRestMinimal.DTOs;
-using ApiRestMinimal.Repository.Interfaces;
+﻿using ApiRestMinimal.Common.Interfaces.Articles;
+using ApiRestMinimal.Contracts.DTOs;
 using ApiRestMinimal.Services.Interfaces;
 using AutoMapper;
 using MiApiMinimal.Models;
 
-namespace ApiRestMinimal.Services.Serv;
+namespace ApiRestMinimal.Services.Articles;
 
 public class ArticleService : IArticleService
 {

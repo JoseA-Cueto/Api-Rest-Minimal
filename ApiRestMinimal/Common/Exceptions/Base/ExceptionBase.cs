@@ -1,4 +1,4 @@
-﻿namespace ApiRestMinimal.Exceptions.Base;
+﻿namespace ApiRestMinimal.Common.Exceptions.Base;
 
 public abstract class ExceptionBase : Exception
 {

@@ -1,6 +1,6 @@
-﻿using ApiRestMinimal.Exceptions.Base;
+﻿using ApiRestMinimal.Common.Exceptions.Base;
 
-namespace MiAplicacion.Exceptions;
+namespace ApiRestMinimal.Common.Exceptions;
 
 public class ValidationException : ExceptionBase
 {

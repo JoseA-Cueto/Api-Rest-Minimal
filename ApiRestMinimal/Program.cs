@@ -5,6 +5,7 @@ using MiAplicacion.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using MiApiMinimal.Mappings;
 
 // Logger configuration
 Log.Logger = new LoggerConfiguration()
@@ -13,6 +14,8 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("starting server");
 
 var builder = WebApplication.CreateBuilder(args);
+// Agregar AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 {
     // Logger connection
     builder.Host.UseSerilog((context, loggerConfiguration) =>

@@ -1,7 +1,6 @@
 ﻿using ApiRestMinimal.Common.Interfaces.Articles;
 using ApiRestMinimal.Persistence.Articles;
 using ApiRestMinimal.Services.Articles;
-using ApiRestMinimal.Services.Interfaces;
 
 namespace ApiRestMinimal.Common.Extensions;
 

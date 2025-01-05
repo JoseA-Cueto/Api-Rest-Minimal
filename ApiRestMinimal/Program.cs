@@ -8,6 +8,7 @@ using Serilog;
 using MiApiMinimal.Mappings;
 using ApiRestMinimal.DTOs;
 using AutoMapper;
+using ApiRestMinimal.Extensions;
 
 // Logger configuration
 Log.Logger = new LoggerConfiguration()
@@ -16,6 +17,10 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("starting server");
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Registrar dependencias usando el contenedor
+builder.Services.AddApplicationServices();
+
 // Agregar AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 {

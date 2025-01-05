@@ -10,7 +10,7 @@ namespace MiApiMinimal.Models
         public string Title { get; set; }
         public string Content { get; set; }
         [Required]
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; } 
     }

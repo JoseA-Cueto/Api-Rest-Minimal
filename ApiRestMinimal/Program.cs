@@ -63,15 +63,15 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 void ConfigureApiEndpoints(WebApplication app)
 {
-    
+   
     app.MapGet("/api/articles", async (ApplicationDbContext db) =>
     {
         var articles = await db.Articles.ToListAsync();
         return Results.Ok(articles);
     });
 
-
-    app.MapGet("/api/articles/{id}", async (int id, ApplicationDbContext db) =>
+    
+    app.MapGet("/api/articles/{id}", async (Guid id, ApplicationDbContext db) =>
     {
         var article = await db.Articles.FindAsync(id);
         if (article is null)
@@ -80,23 +80,25 @@ void ConfigureApiEndpoints(WebApplication app)
         return Results.Ok(article);
     });
 
+   
     app.MapPost("/api/articles", async (Article article, ApplicationDbContext db) =>
     {
-       
         if (string.IsNullOrWhiteSpace(article.Title) || string.IsNullOrWhiteSpace(article.Content))
         {
             throw new ValidationException("Title and Content", "Cannot be empty.");
         }
+
+       
+        article.Id = Guid.NewGuid();
 
         db.Articles.Add(article);
         await db.SaveChangesAsync();
         return Results.Created($"/api/articles/{article.Id}", article);
     });
 
-
-    app.MapPut("/api/articles/{id}", async (int id, Article updatedArticle, ApplicationDbContext db) =>
+ 
+    app.MapPut("/api/articles/{id}", async (Guid id, Article updatedArticle, ApplicationDbContext db) =>
     {
-        
         if (string.IsNullOrWhiteSpace(updatedArticle.Title) || string.IsNullOrWhiteSpace(updatedArticle.Content))
         {
             throw new ValidationException("Title and Content", "Cannot be empty.");
@@ -113,8 +115,8 @@ void ConfigureApiEndpoints(WebApplication app)
         return Results.Ok(article);
     });
 
-   
-    app.MapDelete("/api/articles/{id}", async (int id, ApplicationDbContext db) =>
+  
+    app.MapDelete("/api/articles/{id}", async (Guid id, ApplicationDbContext db) =>
     {
         var article = await db.Articles.FindAsync(id);
         if (article is null)
@@ -125,4 +127,5 @@ void ConfigureApiEndpoints(WebApplication app)
         return Results.Ok();
     });
 }
+
 

@@ -5,6 +5,9 @@ using MiAplicacion.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using MiApiMinimal.Mappings;
+using ApiRestMinimal.DTOs;
+using AutoMapper;
 
 // Logger configuration
 Log.Logger = new LoggerConfiguration()
@@ -13,6 +16,8 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("starting server");
 
 var builder = WebApplication.CreateBuilder(args);
+// Agregar AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 {
     // Logger connection
     builder.Host.UseSerilog((context, loggerConfiguration) =>
@@ -63,69 +68,72 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 void ConfigureApiEndpoints(WebApplication app)
 {
-   
-    app.MapGet("/api/articles", async (ApplicationDbContext db) =>
+    // GET all articles
+    app.MapGet("/api/articles", async (ApplicationDbContext db, IMapper mapper) =>
     {
         var articles = await db.Articles.ToListAsync();
-        return Results.Ok(articles);
+        var articleDtos = mapper.Map<List<ArticleDTOs>>(articles);
+        return Results.Ok(articleDtos);
     });
 
-    
-    app.MapGet("/api/articles/{id}", async (Guid id, ApplicationDbContext db) =>
+    // GET an article by ID
+    app.MapGet("/api/articles/{id}", async (Guid id, ApplicationDbContext db, IMapper mapper) =>
     {
         var article = await db.Articles.FindAsync(id);
         if (article is null)
-            throw new NotFoundException("Article not found");
+            return Results.NotFound(new { Message = "Article not found" });
 
-        return Results.Ok(article);
+        var articleDto = mapper.Map<ArticleDTOs>(article);
+        return Results.Ok(articleDto);
     });
 
-   
-    app.MapPost("/api/articles", async (Article article, ApplicationDbContext db) =>
+    // POST a new article
+    app.MapPost("/api/articles", async (ArticleDTOs articleDto, ApplicationDbContext db, IMapper mapper) =>
     {
-        if (string.IsNullOrWhiteSpace(article.Title) || string.IsNullOrWhiteSpace(article.Content))
+        if (string.IsNullOrWhiteSpace(articleDto.Title) || string.IsNullOrWhiteSpace(articleDto.Content))
         {
-            throw new ValidationException("Title and Content", "Cannot be empty.");
+            return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
         }
 
-       
-        article.Id = Guid.NewGuid();
+        var article = mapper.Map<Article>(articleDto);
+        article.Id = Guid.NewGuid(); // Generate a new Guid for the article
 
         db.Articles.Add(article);
         await db.SaveChangesAsync();
         return Results.Created($"/api/articles/{article.Id}", article);
     });
 
- 
-    app.MapPut("/api/articles/{id}", async (Guid id, Article updatedArticle, ApplicationDbContext db) =>
+    // PUT (update) an article
+    app.MapPut("/api/articles/{id}", async (Guid id, ArticleDTOs updatedArticleDto, ApplicationDbContext db, IMapper mapper) =>
     {
-        if (string.IsNullOrWhiteSpace(updatedArticle.Title) || string.IsNullOrWhiteSpace(updatedArticle.Content))
+        if (string.IsNullOrWhiteSpace(updatedArticleDto.Title) || string.IsNullOrWhiteSpace(updatedArticleDto.Content))
         {
-            throw new ValidationException("Title and Content", "Cannot be empty.");
+            return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
         }
 
         var article = await db.Articles.FindAsync(id);
         if (article is null)
-            throw new NotFoundException("Article not found");
+            return Results.NotFound(new { Message = "Article not found" });
 
-        article.Title = updatedArticle.Title;
-        article.Content = updatedArticle.Content;
+        // Map changes from DTO to entity
+        mapper.Map(updatedArticleDto, article);
         await db.SaveChangesAsync();
 
         return Results.Ok(article);
     });
 
-  
+    // DELETE an article
     app.MapDelete("/api/articles/{id}", async (Guid id, ApplicationDbContext db) =>
     {
         var article = await db.Articles.FindAsync(id);
         if (article is null)
-            throw new NotFoundException("Article not found");
+            return Results.NotFound(new { Message = "Article not found" });
 
         db.Articles.Remove(article);
         await db.SaveChangesAsync();
-        return Results.Ok();
+        return Results.Ok(new { Message = "Article deleted successfully" });
     });
 }
+
 
 

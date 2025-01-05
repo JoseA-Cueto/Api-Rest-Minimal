@@ -1,8 +1,8 @@
-using ApiRestMinimal.Endpoints;
-using ApiRestMinimal.Extensions;
-using MiApiMinimal.Data;
-using MiApiMinimal.Mappings;
-using MiAplicacion.Middleware;
+using ApiRestMinimal.Common.Extensions;
+using ApiRestMinimal.Common.Middleware;
+using ApiRestMinimal.Data;
+using ApiRestMinimal.Endpoints.Articles;
+using ApiRestMinimal.Mappings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;

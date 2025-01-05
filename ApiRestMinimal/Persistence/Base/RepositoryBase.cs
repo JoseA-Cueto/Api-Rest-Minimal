@@ -1,5 +1,5 @@
 ﻿using ApiRestMinimal.Common.Interfaces.BaseRepo;
-using MiApiMinimal.Data;
+using ApiRestMinimal.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiRestMinimal.Persistence.Base;

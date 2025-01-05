@@ -1,6 +1,6 @@
 ﻿using ApiRestMinimal.Common.Interfaces.Articles;
+using ApiRestMinimal.Data;
 using ApiRestMinimal.Persistence.Base;
-using MiApiMinimal.Data;
 using MiApiMinimal.Models;
 
 namespace ApiRestMinimal.Persistence.Articles;

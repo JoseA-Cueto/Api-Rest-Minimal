@@ -1,8 +1,10 @@
+using System.Reflection;
 using ApiRestMinimal.Common.Extensions;
 using ApiRestMinimal.Common.Middleware;
 using ApiRestMinimal.Data;
 using ApiRestMinimal.Endpoints.Articles;
 using ApiRestMinimal.Mappings;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -18,6 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Registrar dependencias usando el contenedor
 builder.Services.AddApplicationServices();
 {
+    // Agregar Validators
+    builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     // Agregar AutoMapper
     builder.Services.AddAutoMapper(typeof(MappingProfile));
     // Logger connection

@@ -5,9 +5,9 @@ namespace MiApiMinimal.Models;
 
 public class Article
 {
-    public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
+    public Guid Id { get; init; }
+    public string Title { get; set; } = default!;
+    public string Content { get; set; } = default!;
     [Required] public Guid CategoryId { get; set; }
-    [ForeignKey("CategoryId")] public virtual Category Category { get; set; }
+    [ForeignKey("CategoryId")] public virtual Category? Category { get; init; }
 }

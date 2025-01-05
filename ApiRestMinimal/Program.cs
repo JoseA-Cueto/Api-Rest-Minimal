@@ -9,6 +9,7 @@ using MiApiMinimal.Mappings;
 using ApiRestMinimal.DTOs;
 using AutoMapper;
 using ApiRestMinimal.Extensions;
+using ApiRestMinimal.Endpoints;
 
 // Logger configuration
 Log.Logger = new LoggerConfiguration()
@@ -65,80 +66,8 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
         });
     }
     app.UseSerilogRequestLogging();
-    ConfigureApiEndpoints(app);
+    app.MapArticleEndpoints();
     app.Run();
 }
-
-// TODO: modificar la estructura de los minimal endpoints
-
-void ConfigureApiEndpoints(WebApplication app)
-{
-    // GET all articles
-    app.MapGet("/api/articles", async (ApplicationDbContext db, IMapper mapper) =>
-    {
-        var articles = await db.Articles.ToListAsync();
-        var articleDtos = mapper.Map<List<ArticleDTOs>>(articles);
-        return Results.Ok(articleDtos);
-    });
-
-    // GET an article by ID
-    app.MapGet("/api/articles/{id}", async (Guid id, ApplicationDbContext db, IMapper mapper) =>
-    {
-        var article = await db.Articles.FindAsync(id);
-        if (article is null)
-            return Results.NotFound(new { Message = "Article not found" });
-
-        var articleDto = mapper.Map<ArticleDTOs>(article);
-        return Results.Ok(articleDto);
-    });
-
-    // POST a new article
-    app.MapPost("/api/articles", async (ArticleDTOs articleDto, ApplicationDbContext db, IMapper mapper) =>
-    {
-        if (string.IsNullOrWhiteSpace(articleDto.Title) || string.IsNullOrWhiteSpace(articleDto.Content))
-        {
-            return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
-        }
-
-        var article = mapper.Map<Article>(articleDto);
-        article.Id = Guid.NewGuid(); // Generate a new Guid for the article
-
-        db.Articles.Add(article);
-        await db.SaveChangesAsync();
-        return Results.Created($"/api/articles/{article.Id}", article);
-    });
-
-    // PUT (update) an article
-    app.MapPut("/api/articles/{id}", async (Guid id, ArticleDTOs updatedArticleDto, ApplicationDbContext db, IMapper mapper) =>
-    {
-        if (string.IsNullOrWhiteSpace(updatedArticleDto.Title) || string.IsNullOrWhiteSpace(updatedArticleDto.Content))
-        {
-            return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
-        }
-
-        var article = await db.Articles.FindAsync(id);
-        if (article is null)
-            return Results.NotFound(new { Message = "Article not found" });
-
-        // Map changes from DTO to entity
-        mapper.Map(updatedArticleDto, article);
-        await db.SaveChangesAsync();
-
-        return Results.Ok(article);
-    });
-
-    // DELETE an article
-    app.MapDelete("/api/articles/{id}", async (Guid id, ApplicationDbContext db) =>
-    {
-        var article = await db.Articles.FindAsync(id);
-        if (article is null)
-            return Results.NotFound(new { Message = "Article not found" });
-
-        db.Articles.Remove(article);
-        await db.SaveChangesAsync();
-        return Results.Ok(new { Message = "Article deleted successfully" });
-    });
-}
-
 
 

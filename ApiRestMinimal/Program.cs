@@ -16,23 +16,27 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("starting server");
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Registrar dependencias usando el contenedor
-builder.Services.AddApplicationServices();
 {
+    // Registrar dependencias usando el contenedor
+    builder.Services.AddApplicationServices();
+    
     // Agregar Validators
-    builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+    
     // Agregar AutoMapper
     builder.Services.AddAutoMapper(typeof(MappingProfile));
+    
     // Logger connection
     builder.Host.UseSerilog((context, loggerConfiguration) =>
     {
         loggerConfiguration.WriteTo.Console();
         loggerConfiguration.ReadFrom.Configuration(context.Configuration);
     });
+    
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
     // Other services
     builder.Services
         .AddEndpointsApiExplorer()
@@ -40,6 +44,7 @@ builder.Services.AddApplicationServices();
         {
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
         });
+    
     // Cors
     builder.Services.AddCors(options =>
     {
@@ -62,6 +67,7 @@ var app = builder.Build();
 
     app.UseCors("AllowAll");
     app.UseMiddleware<ExceptionHandlingMiddleware>();
+    //app.UseMiddleware<ValidationMiddleware>();
     app.UseSerilogRequestLogging();
     app.MapArticleEndpoints();
 

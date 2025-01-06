@@ -1,5 +1,8 @@
+using ApiRestMinimal.Common.Behavior;
 using ApiRestMinimal.Common.Interfaces.Articles;
 using ApiRestMinimal.Contracts.Requests;
+using ApiRestMinimal.Validators;
+using FluentValidation;
 
 namespace ApiRestMinimal.Endpoints.Articles;
 
@@ -18,6 +21,7 @@ public static class ArticleEndpoints
         app.MapGet("/api/articles/{id:guid}", async (Guid id, IArticleService articleService) =>
         {
             var article = await articleService.GetArticleByIdAsync(id);
+            
             if (article is null)
                 return Results.NotFound(new { Message = "Article not found" });
 
@@ -25,26 +29,34 @@ public static class ArticleEndpoints
         });
 
         // POST a new article
-        app.MapPost("/api/articles", async (CreateArticleRequest articleDto, IArticleService articleService) =>
+        app.MapPost("/api/articles", async (
+            CreateArticleRequest createArticleRquest, 
+            IArticleService articleService,
+            IValidator<CreateArticleRequest> validator) =>
         {
-            if (string.IsNullOrWhiteSpace(articleDto.Title) || string.IsNullOrWhiteSpace(articleDto.Content))
-                return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
-
-            await articleService.CreateArticleAsync(articleDto);
-            return Results.Created($"/api/articles/{articleDto.Id}", articleDto);
+            var validationResult = ValidationBehavior.ValidateRequest<CreateArticleRequest>(createArticleRquest, validator);
+            
+            if (validationResult != null)
+                return validationResult;
+            
+            await articleService.CreateArticleAsync(createArticleRquest);
+            return Results.Created($"/api/articles/{createArticleRquest.Id}", createArticleRquest);
         });
 
         // PUT (update) an article
-        app.MapPut("/api/articles/{id:guid}",
-            async (Guid id, UpdateArticleRequest updatedArticleDto, IArticleService articleService) =>
+        app.MapPut("/api/articles/{id:guid}", async (
+            Guid id, 
+            UpdateArticleRequest UpdateArticleRequest, 
+            IArticleService articleService,
+            IValidator<UpdateArticleRequest> validator) =>
             {
-                if (string.IsNullOrWhiteSpace(updatedArticleDto.Title) ||
-                    string.IsNullOrWhiteSpace(updatedArticleDto.Content))
-                    return Results.BadRequest(new { Message = "Title and Content cannot be empty." });
-
-                await articleService.UpdateArticleAsync(id, updatedArticleDto);
-
-                return Results.Ok(updatedArticleDto);
+                var validationResult = ValidationBehavior.ValidateRequest<UpdateArticleRequest>(UpdateArticleRequest, validator);
+            
+                if (validationResult != null)
+                    return validationResult;
+                
+                await articleService.UpdateArticleAsync(id, UpdateArticleRequest);
+                return Results.Ok(UpdateArticleRequest);
             });
 
         // DELETE an article

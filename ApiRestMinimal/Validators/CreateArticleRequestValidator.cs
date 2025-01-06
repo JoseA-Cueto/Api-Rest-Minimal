@@ -7,8 +7,20 @@ public class CreateArticleRequestValidator : AbstractValidator<CreateArticleRequ
 {
     public CreateArticleRequestValidator()
     {
-        RuleFor(x => x.Title).NotEmpty();
-        RuleFor(x => x.Content).NotEmpty();
-        RuleFor(x => x.CategoryId).NotEmpty();
+        RuleFor(x => x.Title)
+            .NotEmpty()
+            .WithMessage("Title is required")
+            .MaximumLength(200)
+            .WithMessage("Title must not exceed the 200 characters");
+        
+        RuleFor(x => x.Content)
+            .NotEmpty()
+            .WithMessage("Content is required")
+            .MaximumLength(5000)
+            .WithMessage("Content must not exceed 5000 characters");
+
+        RuleFor(x => x.CategoryId)
+            .NotEmpty()
+            .WithMessage("CategoryId is required");
     }
 }

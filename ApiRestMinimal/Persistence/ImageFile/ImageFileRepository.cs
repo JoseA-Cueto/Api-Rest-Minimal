@@ -4,7 +4,7 @@ using ApiRestMinimal.Models;
 using ApiRestMinimal.Persistence.Base;
 using MiApiMinimal.Models;
 
-namespace ApiRestMinimal.Persistence.Articles
+namespace ApiRestMinimal.Persistence.ImageFile
 {
     public class ImageFileRepository : RepositoryBase<ImageFile>, IImageFileRepository
     {

@@ -31,11 +31,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Interfaces\ImageFile\" />
         <Folder Include="Data\" />
         <Folder Include="Logs\" />
         <Folder Include="Migrations\" />
-        <Folder Include="Persistence\ImageFile\" />
     </ItemGroup>
 
 </Project>

@@ -3,8 +3,10 @@ using ApiRestMinimal.Common.Extensions;
 using ApiRestMinimal.Common.Middleware;
 using ApiRestMinimal.Data;
 using ApiRestMinimal.Endpoints.Articles;
+using ApiRestMinimal.Endpoints.ImageFiles;
 using ApiRestMinimal.Mappings;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -36,7 +38,7 @@ var builder = WebApplication.CreateBuilder(args);
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    
+
     // Other services
     builder.Services
         .AddEndpointsApiExplorer()
@@ -67,9 +69,9 @@ var app = builder.Build();
 
     app.UseCors("AllowAll");
     app.UseMiddleware<ExceptionHandlingMiddleware>();
-    //app.UseMiddleware<ValidationMiddleware>();
     app.UseSerilogRequestLogging();
     app.MapArticleEndpoints();
+    app.MapImageEndpoints();
 
     app.Run();
 }

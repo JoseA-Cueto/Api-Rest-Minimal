@@ -16,6 +16,7 @@ public class MappingProfile : Profile
         CreateMap<Article, CreateArticleRequest>().ReverseMap();
         CreateMap<Article, UpdateArticleRequest>().ReverseMap();
         CreateMap<Article, ArticleResponse>().ReverseMap();
-       
+        CreateMap<Image, ImageDTOs>().ReverseMap();
+
     }
 }

@@ -11,5 +11,6 @@ public class Article
     public string Content { get; set; } = default!;
     [Required] public Guid CategoryId { get; set; }
     [ForeignKey("CategoryId")] public virtual Category? Category { get; init; }
-   
+    public virtual ICollection<Image>? Images { get; set; }
+
 }

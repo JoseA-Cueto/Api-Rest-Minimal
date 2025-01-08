@@ -41,12 +41,12 @@ var builder = WebApplication.CreateBuilder(args);
 
     // Other services
     builder.Services
-        .AddEndpointsApiExplorer()
-        .AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
-        });
-    
+        .AddEndpointsApiExplorer();
+    //.AddSwaggerGen(options =>
+    //{
+    //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
+    //});
+
     // Cors
     builder.Services.AddCors(options =>
     {
@@ -61,11 +61,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1"); });
-    }
+    //if (app.Environment.IsDevelopment())
+    //{
+    //    app.UseSwagger();
+    //    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1"); });
+    //}
 
     app.UseCors("AllowAll");
     app.UseMiddleware<ExceptionHandlingMiddleware>();

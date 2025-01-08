@@ -1,4 +1,5 @@
-﻿using MiApiMinimal.Models;
+﻿using ApiRestMinimal.Models;
+using MiApiMinimal.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiRestMinimal.Data;
@@ -9,8 +10,9 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<Article> Articles { get; set; } = null!;
-    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Article> Articles { get; set; } 
+    public DbSet<Category> Categories { get; set; } 
+    public DbSet<ImageFile> ImageFiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

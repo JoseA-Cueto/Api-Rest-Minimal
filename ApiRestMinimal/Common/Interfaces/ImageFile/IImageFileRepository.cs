@@ -2,7 +2,7 @@
 using ApiRestMinimal.Models;
 using MiApiMinimal.Models;
 
-namespace ApiRestMinimal.Common.Interfaces.Articles
+namespace ApiRestMinimal.Common.Interfaces.ImageFile
 {
     public interface IImageFileRepository : IRepositoryBase<ImageFile>
     {

@@ -1,4 +1,4 @@
-﻿using ApiRestMinimal.Common.Interfaces.Articles;
+﻿using ApiRestMinimal.Common.Interfaces.ImageFile;
 using ApiRestMinimal.Data;
 using ApiRestMinimal.Models;
 using ApiRestMinimal.Persistence.Base;

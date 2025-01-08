@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MiApiMinimal.Models;
+namespace ApiRestMinimal.Models;
 
 public class Article
 {
@@ -11,5 +11,6 @@ public class Article
     public string Content { get; set; } = default!;
     [Required] public Guid CategoryId { get; set; }
     [ForeignKey("CategoryId")] public virtual Category? Category { get; init; }
-    public ImageFile ImageFile { get; set; }
+    public virtual ICollection<Image>? Images { get; set; }
+
 }

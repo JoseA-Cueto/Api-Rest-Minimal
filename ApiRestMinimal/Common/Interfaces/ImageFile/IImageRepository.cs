@@ -1,10 +1,10 @@
 ﻿using ApiRestMinimal.Common.Interfaces.BaseRepo;
 using ApiRestMinimal.Models;
-using MiApiMinimal.Models;
 
 namespace ApiRestMinimal.Common.Interfaces.ImageFile
 {
-    public interface IImageFileRepository : IRepositoryBase<ImageFile>
+    public interface IImageRepository : IRepositoryBase<Image>
     {
+        Task<Image> GetImageByArticleIdAsync(Guid articleId);
     }
 }

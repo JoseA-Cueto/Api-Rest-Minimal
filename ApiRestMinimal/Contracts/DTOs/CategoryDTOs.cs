@@ -1,4 +1,6 @@
-using MiApiMinimal.Models;
+
+
+using ApiRestMinimal.Models;
 
 namespace ApiRestMinimal.Contracts.DTOs;
 

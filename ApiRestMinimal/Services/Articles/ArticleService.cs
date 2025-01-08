@@ -2,8 +2,9 @@
 using ApiRestMinimal.Common.Interfaces.Articles;
 using ApiRestMinimal.Contracts.DTOs;
 using ApiRestMinimal.Contracts.Requests;
+using ApiRestMinimal.Models;
 using AutoMapper;
-using MiApiMinimal.Models;
+
 
 namespace ApiRestMinimal.Services.Articles;
 

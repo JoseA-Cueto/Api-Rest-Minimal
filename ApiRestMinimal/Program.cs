@@ -3,8 +3,10 @@ using ApiRestMinimal.Common.Extensions;
 using ApiRestMinimal.Common.Middleware;
 using ApiRestMinimal.Data;
 using ApiRestMinimal.Endpoints.Articles;
+using ApiRestMinimal.Endpoints.ImageFiles;
 using ApiRestMinimal.Mappings;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -36,15 +38,15 @@ var builder = WebApplication.CreateBuilder(args);
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    
+
     // Other services
     builder.Services
-        .AddEndpointsApiExplorer()
-        .AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
-        });
-    
+        .AddEndpointsApiExplorer();
+    //.AddSwaggerGen(options =>
+    //{
+    //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "API de Art�culos", Version = "v1" });
+    //});
+
     // Cors
     builder.Services.AddCors(options =>
     {
@@ -59,17 +61,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1"); });
-    }
+    //if (app.Environment.IsDevelopment())
+    //{
+    //    app.UseSwagger();
+    //    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Art�culos V1"); });
+    //}
 
     app.UseCors("AllowAll");
     app.UseMiddleware<ExceptionHandlingMiddleware>();
-    //app.UseMiddleware<ValidationMiddleware>();
     app.UseSerilogRequestLogging();
     app.MapArticleEndpoints();
+    app.MapImageEndpoints();
 
     app.Run();
 }

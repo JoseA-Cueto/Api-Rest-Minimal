@@ -1,5 +1,6 @@
 ﻿using ApiRestMinimal.Common.Interfaces.BaseRepo;
-using MiApiMinimal.Models;
+using ApiRestMinimal.Models;
+
 
 namespace ApiRestMinimal.Common.Interfaces.Articles;
 

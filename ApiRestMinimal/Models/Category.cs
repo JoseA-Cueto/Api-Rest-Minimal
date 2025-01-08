@@ -1,4 +1,4 @@
-﻿namespace MiApiMinimal.Models;
+﻿namespace ApiRestMinimal.Models;
 
 public class Category
 {

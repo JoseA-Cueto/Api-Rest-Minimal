@@ -1,9 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using ApiRestMinimal.Common.Interfaces.EncryptUser;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace ApiRestMinimal.Endpoints.EncryptUser
+namespace ApiRestMinimal.Services.EncryptUser
 {
-    public class EncryptionEndPoints
+    public class EncryptionService : IEncryptionService
     {
         public string EncryptPassword(string password)
         {

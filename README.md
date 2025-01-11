@@ -30,7 +30,7 @@ SQL Server or any other database provider compatible with EF Core
    ```bash
    dotnet ef database update
    ```
-4. **Ejecutar la aplicación**
+4. **Run the application**
    
    ```bash
    dotnet run

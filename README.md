@@ -1,29 +1,31 @@
-## Objetivos
+## Objectives
+Provide a RESTful API that allows CRUD operations (Create, Read, Update, Delete) on resources.
 
-- Proporcionar una API RESTful que permita realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los recursos.
-- Utilizar EF Core para interactuar con la base de datos de manera eficiente.
-- Implementar `user-secrets` para almacenar configuraciones sensibles, como cadenas de conexión y claves API, evitando así su exposición en el código fuente.
+Use EF Core to interact efficiently with the database.
 
-## Requisitos
+Implement user-secrets to store sensitive configurations, such as connection strings and API keys, thereby avoiding their exposure in the source code.
 
-- [.NET SDK](https://dotnet.microsoft.com/download) (versión 9.0)
-- [Visual Studio](https://visualstudio.microsoft.com/) o cualquier otro IDE compatible con .NET
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) o cualquier otro proveedor de base de datos compatible con EF Core
+## Requirements
+.NET SDK (version 9.0)
 
-## Configuración del Proyecto
+Visual Studio or any other IDE compatible with .NET
 
-1. **Clonar el Repositorio**
+SQL Server or any other database provider compatible with EF Core
+
+## Project Setup
+
+1. **Clone the Repository**
    
    ```bash
    git clone https://github.com/JoseA-Cueto/Api-Rest-Minimal.git  
    cd ApiRestMinimal
    ```
-2. **Restaurar dependencias**
+2. **Restore dependencies**
    
    ```bash
    dotnet restore
    ```
-3. **Migrar la base de datos**
+3. **Migrate the database**
    
    ```bash
    dotnet ef database update

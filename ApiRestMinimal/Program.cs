@@ -1,13 +1,17 @@
 using System.Reflection;
+using System.Text;
 using ApiRestMinimal.Common.Extensions;
 using ApiRestMinimal.Common.Middleware;
+using ApiRestMinimal.Custom;
 using ApiRestMinimal.Data;
 using ApiRestMinimal.Endpoints.Articles;
 using ApiRestMinimal.Endpoints.ImageFiles;
 using ApiRestMinimal.Mappings;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -38,7 +42,28 @@ var builder = WebApplication.CreateBuilder(args);
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddSingleton<ApiRestMinimal.Custom.Utility>();
+    builder.Services.AddAuthentication(config =>
+    {
+        config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(config =>
+    {
+        config.RequireHttpsMetadata = false;
+        config.SaveToken = true;
+        config.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings : SecretKey"]!))
 
+        };
+
+    } );
     // Other services
     builder.Services
         .AddEndpointsApiExplorer()
@@ -70,7 +95,8 @@ var app = builder.Build();
     app.UseCors("AllowAll");
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseSerilogRequestLogging();
-    
+    app.UseAuthentication();
+    app.UseAuthorization();
     app.UseRouting();
     
     app.MapArticleEndpoints();

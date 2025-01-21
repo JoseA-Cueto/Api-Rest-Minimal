@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(config =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
     };
 });
-
+//builder.Services.AddAuthorization();
 // Otros servicios necesarios (Swagger, CORS, etc.)
 builder.Services
     .AddEndpointsApiExplorer()
@@ -103,7 +103,7 @@ app.UseCors("AllowAll");
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 
 app.UseRouting();

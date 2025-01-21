@@ -9,7 +9,7 @@ namespace ApiRestMinimal.Endpoints.ImageFiles
         public static void MapImageEndpoints(this IEndpointRouteBuilder app)
         {
             // Endpoint para subir una imagen
-            app.MapPost("/api/articles/{articleId}/upload-image", [Authorize] async (Guid articleId, IFormFile file, IImageService imageService, IWebHostEnvironment env) =>
+            app.MapPost("/api/articles/{articleId}/upload-image",  async (Guid articleId, IFormFile file, IImageService imageService, IWebHostEnvironment env) =>
             {
                 try
                 {
@@ -24,7 +24,7 @@ namespace ApiRestMinimal.Endpoints.ImageFiles
             .DisableAntiforgery();
 
             // Endpoint para obtener la imagen asociada a un artículo
-            app.MapGet("/api/articles/{articleId}/image", [Authorize] async (Guid articleId, IImageService imageService) =>
+            app.MapGet("/api/articles/{articleId}/image",  async (Guid articleId, IImageService imageService) =>
             {
                 try
                 {
@@ -38,7 +38,7 @@ namespace ApiRestMinimal.Endpoints.ImageFiles
             });
 
             // Endpoint para eliminar una imagen
-            app.MapDelete("/api/images/{imageId}", [Authorize] async (Guid imageId, IImageService imageService) =>
+            app.MapDelete("/api/images/{imageId}",  async (Guid imageId, IImageService imageService) =>
             {
                 try
                 {

@@ -12,14 +12,14 @@ public static class ArticleEndpoints
     public static void MapArticleEndpoints(this IEndpointRouteBuilder app)
     {
         // GET all articles
-        app.MapGet("/api/articles", [Authorize] async (IArticleService articleService) =>
+        app.MapGet("/api/articles",  async (IArticleService articleService) =>
         {
             var articles = await articleService.GetAllArticlesAsync();
             return Results.Ok(articles);
         });
 
         // GET an article by ID
-        app.MapGet("/api/articles/{id:guid}", [Authorize] async (Guid id, IArticleService articleService) =>
+        app.MapGet("/api/articles/{id:guid}",  async (Guid id, IArticleService articleService) =>
         {
             var article = await articleService.GetArticleByIdAsync(id);
             
@@ -30,7 +30,7 @@ public static class ArticleEndpoints
         });
 
         // POST a new article
-        app.MapPost("/api/articles", [Authorize] async (
+        app.MapPost("/api/articles",  async (
             CreateArticleRequest createArticleRquest, 
             IArticleService articleService,
             IValidator<CreateArticleRequest> validator) =>
@@ -45,7 +45,7 @@ public static class ArticleEndpoints
         });
 
         // PUT (update) an article
-        app.MapPut("/api/articles/{id:guid}", [Authorize] async (
+        app.MapPut("/api/articles/{id:guid}",  async (
             Guid id, 
             UpdateArticleRequest UpdateArticleRequest, 
             IArticleService articleService,
@@ -61,7 +61,7 @@ public static class ArticleEndpoints
             });
 
         // DELETE an article
-        app.MapDelete("/api/articles/{id:guid}", [Authorize] async (Guid id, IArticleService articleService) =>
+        app.MapDelete("/api/articles/{id:guid}",  async (Guid id, IArticleService articleService) =>
         {
             var article = await articleService.GetArticleByIdAsync(id);
             if (article is null)

@@ -6,6 +6,7 @@ using ApiRestMinimal.Custom;
 using ApiRestMinimal.Data;
 using ApiRestMinimal.Endpoints.Articles;
 using ApiRestMinimal.Endpoints.ImageFiles;
+using ApiRestMinimal.Endpoints.Users;
 using ApiRestMinimal.Mappings;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -101,6 +102,7 @@ var app = builder.Build();
     
     app.MapArticleEndpoints();
     app.MapImageEndpoints();
+    app.MapUserEndpoints();
 
     app.Run();
 }

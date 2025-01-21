@@ -103,6 +103,8 @@ app.UseCors("AllowAll");
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.UseRouting();
 

@@ -10,10 +10,11 @@ namespace ApiRestMinimal.Custom
     {
         private readonly IConfiguration _configuration;
 
-        public Utility(in IConfiguration configuration)
+        public Utility(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+
         public string EncryptPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -36,7 +37,8 @@ namespace ApiRestMinimal.Custom
              new Claim(ClaimTypes.Email, user.Email ),
              
          };
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings : SecretKey"]!));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]!));
+
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             //deatelles tokens
             var jwtConfig = new JwtSecurityToken(

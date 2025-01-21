@@ -43,7 +43,11 @@ var builder = WebApplication.CreateBuilder(args);
     // Database connection
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    builder.Services.AddSingleton<ApiRestMinimal.Custom.Utility>();
+    builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+    builder.Services.AddScoped<ApiRestMinimal.Custom.Utility>();
+
+    builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
     builder.Services.AddAuthentication(config =>
     {
         config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,7 +64,7 @@ var builder = WebApplication.CreateBuilder(args);
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey
-            (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings : SecretKey"]!))
+            (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
 
         };
 
@@ -97,7 +101,7 @@ var app = builder.Build();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseSerilogRequestLogging();
     app.UseAuthentication();
-    app.UseAuthorization();
+  
     app.UseRouting();
     
     app.MapArticleEndpoints();

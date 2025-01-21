@@ -11,11 +11,11 @@ namespace ApiRestMinimal.Endpoints.Users
     {
         public static void MapUserEndpoints(this IEndpointRouteBuilder app)
         {
-            // Register user
             app.MapPost("/api/users/register", async (
-                UserDTOs userDto,
-                IUserService userService,
-                IValidator<UserDTOs> validator) =>
+             UserDTOs userDto,
+             IUserService userService,
+             IValidator<UserDTOs> validator // Este es el validador que FluentValidation inyecta automáticamente
+         ) =>
             {
                 var validationResult = ValidationBehavior.ValidateRequest<UserDTOs>(userDto, validator);
 
@@ -33,13 +33,14 @@ namespace ApiRestMinimal.Endpoints.Users
                 }
             });
 
-            // Login user
+
             app.MapPost("/api/users/login", async (
                 LoginDTOs loginDto,
                 IUserService userService,
                 Utility utility,
                 IConfiguration configuration,
-                IValidator<LoginDTOs> validator) =>
+                IValidator<LoginDTOs> validator // El validador de LoginDTOs inyectado
+            ) =>
             {
                 var validationResult = ValidationBehavior.ValidateRequest<LoginDTOs>(loginDto, validator);
 
@@ -51,10 +52,10 @@ namespace ApiRestMinimal.Endpoints.Users
                 if (user is null)
                     return Results.Json(new { Message = "Invalid credentials" }, statusCode: 401);
 
-
                 var token = utility.GenerateJWT(user);
                 return Results.Ok(new { Token = token });
             });
+
 
             // Get user by ID
             app.MapGet("/api/users/{id:guid}", async (Guid id, IUserService userService) =>

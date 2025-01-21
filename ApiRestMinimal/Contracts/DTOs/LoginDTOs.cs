@@ -1,9 +1,7 @@
 ﻿namespace ApiRestMinimal.Contracts.DTOs
 {
-    public class UserDTOs
+    public class LoginDTOs
     {
-  
-        public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
     }

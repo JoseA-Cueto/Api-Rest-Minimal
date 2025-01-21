@@ -6,7 +6,7 @@ namespace ApiRestMinimal.Persistence.Base;
 
 public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
-    private readonly ApplicationDbContext _context;
+    protected readonly ApplicationDbContext _context;
 
     public RepositoryBase(ApplicationDbContext context)
     {
